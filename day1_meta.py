@@ -28,10 +28,11 @@ df.groupby('param_marka-pojazdu')['price_value'].mean()
  .head(50)
  ).plot(kind='bar', figsize=(15,5))
 
-(
- df
- .groupby('param_marka-pojazdu')['price_value']
- .agg([np.mean, np.median, np.size])
- .sort_values(by='mean', ascending=False)
- .head(50)
- ).plot(kind='bar', figsize=(15,5), subplots = True)
+def group_and_barplot(feat_groupby, feat_agg, agg_funcs = [np.mean, np.median, np.size], feat_sort='mean', top=50, subplots=True):
+    return (
+        df
+        .groupby(groupby)[feat_agg]
+        .agg(agg_funcs)
+        .sort_values(by=feat_sort, ascending=False)
+        .head(top)
+        ).plot(kind='bar', figsize=(15,5), subplots = subplots)
