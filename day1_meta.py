@@ -24,11 +24,13 @@ df = pd.read_hdf("data/car.h5")
 print(df.shape)
 print(df.sample(5))
 
+df=df[df['price_currency'] != 'EUR']
+
 #Dummy model
 
 feats = ['car_id']
 X = df[ feats ].values
-Y = df['car_id'].values
+Y = df['price_value'].values
 
 model = DummyRegressor()
 model.fit(X,Y)
