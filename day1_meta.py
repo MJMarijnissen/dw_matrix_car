@@ -61,3 +61,9 @@ model = DecisionTreeRegressor(max_depth = 5)
 scores = cross_val_score(model, X, Y, cv=3, scoring = 'neg_mean_absolute_error')
 print("Decision tree error: ",np.mean(scores))
 
+#most influential features
+m = DecisionTreeRegressor(max_depth=5)
+m.fit(X,Y)
+
+imp = PermutationImportance(m, random_state=0).fit(X,Y)
+print(eli5.show_weights(imp, feature_names = cat_feats).data)
