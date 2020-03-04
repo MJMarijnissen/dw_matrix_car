@@ -36,7 +36,7 @@ model = DummyRegressor()
 model.fit(X,Y)
 y_pred = model.predict(X)
 
-print(mae(Y, y_pred))
+print("Dummy model error: ", mae(Y, y_pred))
 
 ## Features
 SUFFIX_CAT = "__cat"
@@ -48,4 +48,16 @@ for feat in df.columns:
         df[feat] = factorized_values
     else:
         df[feat + SUFFIX_CAT] = factorized_values
+        
+#Decision tree
+cat_feats = [x for x in df.columns if SUFFIX_CAT in x]
+cat_feats = [x for x in cat_feats if 'price' not in x]
+        
+X = df[cat_feats].values
+Y = df['price_value'].values
+
+model = DecisionTreeRegressor(max_depth = 5)
+
+scores = cross_val_score(model, X, Y, cv=3, scoring = 'neg_mean_absolute_error')
+print("Decision tree error: ",np.mean(scores))
 
