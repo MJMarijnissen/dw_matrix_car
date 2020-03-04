@@ -37,3 +37,15 @@ model.fit(X,Y)
 y_pred = model.predict(X)
 
 print(mae(Y, y_pred))
+
+## Features
+SUFFIX_CAT = "__cat"
+for feat in df.columns:
+    if isinstance(df[feat][0], list) :continue
+    
+    factorized_values = df[feat].factorize()[0]
+    if SUFFIX_CAT in feat:
+        df[feat] = factorized_values
+    else:
+        df[feat + SUFFIX_CAT] = factorized_values
+
