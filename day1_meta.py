@@ -17,7 +17,21 @@ from sklearn.metrics import mean_absolute_error as mae
 from sklearn.model_selection import cross_val_score
 
 import eli5
+from eli5.sklearn import PermutationImportance
 
+#read data
 df = pd.read_hdf("data/car.h5")
 print(df.shape)
 print(df.sample(5))
+
+#Dummy model
+
+feats = ['car_id']
+X = df[ feats ].values
+Y = df['car_id'].values
+
+model = DummyRegressor()
+model.fit(X,Y)
+y_pred = model.predict(X)
+
+print(mae(Y, y_pred))
