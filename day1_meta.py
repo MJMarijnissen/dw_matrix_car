@@ -15,8 +15,6 @@ from sklearn.dummy import DummyRegressor
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.ensemble import RandomForestRegressor
 
-
-
 from sklearn.metrics import mean_absolute_error as mae
 from sklearn.model_selection import cross_val_score, KFold
 
@@ -28,19 +26,7 @@ df = pd.read_hdf("data/car.h5")
 print(df.shape)
 print(df.sample(5))
 
-df=df[df['price_currency'] != 'EUR']
-
-#Dummy model
-
-feats = ['car_id']
-X = df[ feats ].values
-Y = df['price_value'].values
-
-model = DummyRegressor()
-model.fit(X,Y)
-y_pred = model.predict(X)
-
-print("Dummy model error: ", mae(Y, y_pred))
+#df=df[df['price_currency'] != 'EUR']
 
 ## Features
 SUFFIX_CAT = "__cat"
