@@ -50,34 +50,34 @@ def run_model(model, feats):
     scores = cross_val_score(model, X, Y, cv=3, scoring = 'neg_mean_absolute_error')
     return np.mean(scores), np.std(scores)
 
-# #Decision Tree
-# print("Decision Tree")
-# print(run_model(DecisionTreeRegressor(max_depth = 5), cat_feats))
+#Decision Tree
+print("Decision Tree")
+print(run_model(DecisionTreeRegressor(max_depth = 5), cat_feats))
 
-# #Random Forest
-# print("Random Forest")
-# print(run_model(RandomForestRegressor(max_depth = 5, n_estimators=50, random_state=0), cat_feats))
+#Random Forest
+print("Random Forest")
+print(run_model(RandomForestRegressor(max_depth = 5, n_estimators=50, random_state=0), cat_feats))
 
-# #XGBoost
-# xgb_params = {
-#     'max_depth': 5,
-#     'n_estimators': 50,
-#     #'learning_rate': 0.1,
-#     'seed': 0
-#     }
+#XGBoost
+xgb_params = {
+    'max_depth': 5,
+    'n_estimators': 50,
+    #'learning_rate': 0.1,
+    'seed': 0
+    }
 
-# model = xgb.XGBRFRegressor(**xgb_params)
-# print("XGBoost")
-# print(run_model(model, cat_feats))
+model = xgb.XGBRFRegressor(**xgb_params)
+print("XGBoost")
+print(run_model(model, cat_feats))
 
-# #most influential features
-# X = df[cat_feats].values
-# Y = df['price_value'].values
-# m = xgb.XGBRFRegressor(max_depth=5, n_estimators=50, learning_rate=0.1, seed=0)
-# m.fit(X,Y)
+#most influential features
+X = df[cat_feats].values
+Y = df['price_value'].values
+m = xgb.XGBRFRegressor(max_depth=5, n_estimators=50, learning_rate=0.1, seed=0)
+m.fit(X,Y)
 
-# imp = PermutationImportance(m, random_state=0).fit(X,Y)
-# print(eli5.show_weights(imp, feature_names = cat_feats).data)
+imp = PermutationImportance(m, random_state=0).fit(X,Y)
+print(eli5.show_weights(imp, feature_names = cat_feats).data)
     
 #from above code come out the most infuential features:
 feats = ['param_napęd__cat',
