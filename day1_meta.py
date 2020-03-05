@@ -7,14 +7,18 @@ Created on Mon Mar  2 14:38:40 2020
 
 import pandas as pd
 import numpy as np
+import xgboost as xgb
 #import matplotlib.pyplot as plt
 #import seaborn as sns
 
 from sklearn.dummy import DummyRegressor
 from sklearn.tree import DecisionTreeRegressor
+from sklearn.ensemble import RandomForestRegressor
+
+
 
 from sklearn.metrics import mean_absolute_error as mae
-from sklearn.model_selection import cross_val_score
+from sklearn.model_selection import cross_val_score, KFold
 
 import eli5
 from eli5.sklearn import PermutationImportance
