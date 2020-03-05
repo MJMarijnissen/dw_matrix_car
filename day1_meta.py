@@ -50,7 +50,13 @@ def run_model(model, feats):
     scores = cross_val_score(model, X, Y, cv=3, scoring = 'neg_mean_absolute_error')
     return np.mean(scores), np.std(scores)
 
+#Decision Tree
+print("Decision Tree")
 print(run_model(DecisionTreeRegressor(max_depth = 5), cat_feats))
+
+#Random Forest
+print("Random Forest")
+print(run_model(RandomForestRegressor(max_depth = 5, n_estimators=50, random_state=0), cat_feats))
 #most influential features
 # m = DecisionTreeRegressor(max_depth=5)
 # m.fit(X,Y)
