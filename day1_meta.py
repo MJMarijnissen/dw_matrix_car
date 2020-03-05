@@ -62,7 +62,7 @@ def run_model(model, feats):
 xgb_params = {
     'max_depth': 5,
     'n_estimators': 50,
-    'learning_rate': 0.1,
+    #'learning_rate': 0.1,
     'seed': 0
     }
 
@@ -71,8 +71,10 @@ print("XGBoost")
 print(run_model(model, cat_feats))
 
 #most influential features
-# m = DecisionTreeRegressor(max_depth=5)
-# m.fit(X,Y)
+X = df[cat_feats].values
+Y = df['price_value'].values
+m = xgb.XGBRFRegressor(max_depth=5, n_estimators=50, learning_rate=0.1, seed=0)
+m.fit(X,Y)
 
-# imp = PermutationImportance(m, random_state=0).fit(X,Y)
-# print(eli5.show_weights(imp, feature_names = cat_feats).data)
+imp = PermutationImportance(m, random_state=0).fit(X,Y)
+print(eli5.show_weights(imp, feature_names = cat_feats).data)
