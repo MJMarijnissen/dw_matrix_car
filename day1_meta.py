@@ -43,17 +43,17 @@ for feat in df.columns:
 cat_feats = [x for x in df.columns if SUFFIX_CAT in x]
 cat_feats = [x for x in cat_feats if 'price' not in x]
         
-X = df[cat_feats].values
-Y = df['price_value'].values
+def run_model(model, feats):
+    X = df[feats].values
+    Y = df['price_value'].values
+    
+    scores = cross_val_score(model, X, Y, cv=3, scoring = 'neg_mean_absolute_error')
+    return np.mean(scores), np.std(scores)
 
-model = DecisionTreeRegressor(max_depth = 5)
-
-scores = cross_val_score(model, X, Y, cv=3, scoring = 'neg_mean_absolute_error')
-print("Decision tree error: ",np.mean(scores))
-
+print(run_model(DecisionTreeRegressor(max_depth = 5), cat_feats))
 #most influential features
-m = DecisionTreeRegressor(max_depth=5)
-m.fit(X,Y)
+# m = DecisionTreeRegressor(max_depth=5)
+# m.fit(X,Y)
 
-imp = PermutationImportance(m, random_state=0).fit(X,Y)
-print(eli5.show_weights(imp, feature_names = cat_feats).data)
+# imp = PermutationImportance(m, random_state=0).fit(X,Y)
+# print(eli5.show_weights(imp, feature_names = cat_feats).data)
