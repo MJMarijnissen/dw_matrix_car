@@ -92,6 +92,17 @@ def obj_func(params):
     mean_mae, score_std = run_model(xgb.XGBRegressor(**params), feats)
     return {'loss': np.abs(mean_mae), 'status': STATUS_OK}
 
+#objective space
+xgb_reg_params = {
+    'learning_rate': hp.choice('learning_rate', np.arange(0.05, 0.31, 0.05)),
+    'max_depth': hp.choice('max_depth', np.arange(5,16,1, dtype=int)),
+    'subsample': hp.quniform('subsample', 0.5, 1, 0.05),
+    'colsample_bytree': hp.quniform('colsample_bytree', 0.5, 1, 0.05),
+    'objective': 'reg:squarederror',
+    'n_estimators': 100,
+    'seed': 0,
+    }
+
 # #most influential features
 # X = df[cat_feats].values
 # Y = df['price_value'].values
