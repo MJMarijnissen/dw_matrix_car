@@ -11,15 +11,14 @@ import xgboost as xgb
 #import matplotlib.pyplot as plt
 #import seaborn as sns
 
-from sklearn.dummy import DummyRegressor
-from sklearn.tree import DecisionTreeRegressor
-from sklearn.ensemble import RandomForestRegressor
 
 from sklearn.metrics import mean_absolute_error as mae
 from sklearn.model_selection import cross_val_score, KFold
 
 import eli5
 from eli5.sklearn import PermutationImportance
+
+from hyperopt import hp, fmin, tpe, STATUS_OK
 
 #read data
 df = pd.read_hdf("data/car.h5")
