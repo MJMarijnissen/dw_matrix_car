@@ -73,17 +73,17 @@ feats = ['param_napęd__cat',
 # print("Random Forest")
 # print(run_model(RandomForestRegressor(max_depth = 5, n_estimators=50, random_state=0), cat_feats))
 
-#XGBoost
-xgb_params = {
-    'max_depth': 5,
-    'n_estimators': 50,
-    'learning_rate': 0.1,
-    'seed': 0
-    }
+# #XGBoost
+# xgb_params = {
+#     'max_depth': 5,
+#     'n_estimators': 50,
+#     'learning_rate': 0.1,
+#     'seed': 0
+#     }
 
-model = xgb.XGBRFRegressor(**xgb_params)
-print("XGBoost")
-print(run_model(model, cat_feats))
+# model = xgb.XGBRFRegressor(**xgb_params)
+# print("XGBoost")
+# print(run_model(model, cat_feats))
 
 def obj_func(params):
     print("training with params: ")
