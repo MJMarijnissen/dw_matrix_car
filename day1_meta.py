@@ -42,57 +42,17 @@ for feat in df.columns:
 cat_feats = [x for x in df.columns if SUFFIX_CAT in x]
 cat_feats = [x for x in cat_feats if 'price' not in x]
         
+#unfactorizing data to improve results (reduce error)
+df['param_moc'] = df['param_moc'].map(lambda x: -1 if str(x) == 'None' else int(x.split(" ")[0]))
+df['param_rok-produkcji'] = df['param_rok-produkcji'].map(lambda x: -1 if str(x) == 'None' else int(x))
+df['param_pojemność-skokowa'] = df['param_pojemność-skokowa'].map(lambda x: -1 if str(x) == 'None' else int(x.split("cm")[0].replace(" ", "")))
+
 def run_model(model, feats):
     X = df[feats].values
     Y = df['price_value'].values
     
     scores = cross_val_score(model, X, Y, cv=3, scoring = 'neg_mean_absolute_error')
     return np.mean(scores), np.std(scores)
-
-#Decision Tree
-print("Decision Tree")
-print(run_model(DecisionTreeRegressor(max_depth = 5), cat_feats))
-
-#Random Forest
-print("Random Forest")
-print(run_model(RandomForestRegressor(max_depth = 5, n_estimators=50, random_state=0), cat_feats))
-
-#XGBoost
-xgb_params = {
-    'max_depth': 5,
-    'n_estimators': 50,
-    #'learning_rate': 0.1,
-    'seed': 0
-    }
-
-model = xgb.XGBRFRegressor(**xgb_params)
-print("XGBoost")
-print(run_model(model, cat_feats))
-
-#most influential features
-X = df[cat_feats].values
-Y = df['price_value'].values
-m = xgb.XGBRFRegressor(max_depth=5, n_estimators=50, learning_rate=0.1, seed=0)
-m.fit(X,Y)
-
-imp = PermutationImportance(m, random_state=0).fit(X,Y)
-print(eli5.show_weights(imp, feature_names = cat_feats).data)
-    
-#from above code come out the most infuential features:
-feats = ['param_napęd__cat',
-'param_skrzynia-biegów__cat',
-'param_faktura-vat__cat',
-'param_rok-produkcji__cat',
-'param_moc__cat',
-'param_stan__cat',
-'feature_kamera-cofania__cat',
-'feature_łopatki-zmiany-biegów__cat',
-'param_pojemność-skokowa__cat']
-
-#unfactorizing data to improve results (reduce error)
-df['param_moc'] = df['param_moc'].map(lambda x: -1 if str(x) == 'None' else int(x.split(" ")[0]))
-df['param_rok-produkcji'] = df['param_rok-produkcji'].map(lambda x: -1 if str(x) == 'None' else int(x))
-df['param_pojemność-skokowa'] = df['param_pojemność-skokowa'].map(lambda x: -1 if str(x) == 'None' else int(x.split("cm")[0].replace(" ", "")))
 
 #creating feat list of most influential features
 feats = ['param_napęd__cat',
@@ -105,14 +65,55 @@ feats = ['param_napęd__cat',
 'feature_łopatki-zmiany-biegów__cat',
 'param_pojemność-skokowa']
 
-#XGBoost most influantial
+# #Decision Tree
+# print("Decision Tree")
+# print(run_model(DecisionTreeRegressor(max_depth = 5), cat_feats))
+
+# #Random Forest
+# print("Random Forest")
+# print(run_model(RandomForestRegressor(max_depth = 5, n_estimators=50, random_state=0), cat_feats))
+
+#XGBoost
 xgb_params = {
-    'max_depth': 6,
-    'n_estimators': 60,
-    #'learning_rate': 0.1,
+    'max_depth': 5,
+    'n_estimators': 50,
+    'learning_rate': 0.1,
     'seed': 0
     }
 
 model = xgb.XGBRFRegressor(**xgb_params)
 print("XGBoost")
-print(run_model(model, feats))
+print(run_model(model, cat_feats))
+
+# #most influential features
+# X = df[cat_feats].values
+# Y = df['price_value'].values
+# m = xgb.XGBRFRegressor(max_depth=5, n_estimators=50, learning_rate=0.1, seed=0)
+# m.fit(X,Y)
+
+# imp = PermutationImportance(m, random_state=0).fit(X,Y)
+# print(eli5.show_weights(imp, feature_names = cat_feats).data)
+    
+# #from above code come out the most infuential features:
+# feats = ['param_napęd__cat',
+# 'param_skrzynia-biegów__cat',
+# 'param_faktura-vat__cat',
+# 'param_rok-produkcji__cat',
+# 'param_moc__cat',
+# 'param_stan__cat',
+# 'feature_kamera-cofania__cat',
+# 'feature_łopatki-zmiany-biegów__cat',
+# 'param_pojemność-skokowa__cat']
+
+
+# #XGBoost most influantial
+# xgb_params = {
+#     'max_depth': 6,
+#     'n_estimators': 60,
+#     #'learning_rate': 0.1,
+#     'seed': 0
+#     }
+
+# model = xgb.XGBRFRegressor(**xgb_params)
+# print("XGBoost")
+# print(run_model(model, feats))
