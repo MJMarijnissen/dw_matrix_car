@@ -85,6 +85,13 @@ model = xgb.XGBRFRegressor(**xgb_params)
 print("XGBoost")
 print(run_model(model, cat_feats))
 
+def obj_func(params):
+    print("training with params: ")
+    print(params)
+    
+    mean_mae, score_std = run_model(xgb.XGBRegressor(**params), feats)
+    return {'loss': np.abs(mean_mae), 'status': STATUS_OK}
+
 # #most influential features
 # X = df[cat_feats].values
 # Y = df['price_value'].values
