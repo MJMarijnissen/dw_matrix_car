@@ -103,6 +103,11 @@ xgb_reg_params = {
     'seed': 0,
     }
 
+#run
+best = fmin(obj_func, xgb_reg_params, algo=tpe.suggest, max_evals=15)
+
+best
+
 # #most influential features
 # X = df[cat_feats].values
 # Y = df['price_value'].values
